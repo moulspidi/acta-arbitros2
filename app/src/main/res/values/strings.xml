@@ -42,6 +42,9 @@
     <string name="live_games_vbr_com">All live matches on website</string>
     <string name="my_account">My account</string>
 
+    <string name="sign_coaches_first">Sign coaches first</string>
+    <string name="pre_sign_coaches_hint">Select “Coach (Home)” and “Coach (Guest)” to sign before the match starts.</string>
+
     <!-- User activity -->
     <string name="user_sign_in">Sign in</string>
     <string name="user_password_update">Update my password</string>
