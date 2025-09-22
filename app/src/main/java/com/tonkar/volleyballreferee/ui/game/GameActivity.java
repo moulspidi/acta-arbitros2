@@ -1,5 +1,7 @@
 package com.tonkar.volleyballreferee.ui.game;
 
+import android.widget.Toast;
+
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.*;
@@ -61,6 +63,9 @@ public class GameActivity extends AppCompatActivity implements ScoreListener, Ti
     private MaterialButton     mRightTeamCardsButton;
     private CountDown          mCountDown;
 
+    private boolean preSignCoaches = false;
+    private boolean askedPreSignOnce = false;
+
     public GameActivity() {
         super();
         getSupportFragmentManager().addFragmentOnAttachListener((fragmentManager, fragment) -> {
@@ -77,7 +82,7 @@ public class GameActivity extends AppCompatActivity implements ScoreListener, Ti
     protected void onCreate(Bundle savedInstanceState) {
         mStoredGamesService = new StoredGamesManager(this);
         mGame = mStoredGamesService.loadCurrentGame();
-
+        preSignCoaches = getIntent().getBooleanExtra("pre_sign_coaches", false);
         super.onCreate(savedInstanceState);
 
         Log.i(Tags.GAME_UI, "Create game activity");
