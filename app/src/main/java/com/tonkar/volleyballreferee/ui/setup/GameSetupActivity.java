@@ -118,47 +118,40 @@ public class GameSetupActivity extends AppCompatActivity {
         Log.i(Tags.SETUP_UI, "Start game");
     
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog);
-        builder.setTitle(getString(R.string.new_game_title))
-               .setMessage(getString(R.string.confirm_game_setup_question))
-               // NEW: let user sign coaches first
-               .setNeutralButton(R.string.sign_coaches_first, (dialog, which) -> {
-                    // keep setup data
-                    saveTeams();
-                    saveRules();
-                    saveLeague();
-                
-                    // Create current game but DO NOT start yet
-                    StoredGamesService storedGamesService = new StoredGamesManager(this);
-                    storedGamesService.createCurrentGame(mGame);
-                
-                    // Go to GameActivity and tell it to pop the signature dialog
-                    Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
-                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            | Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    gameIntent.putExtra("pre_sign_coaches", true);
-                    startActivity(gameIntent);
-                    UiUtils.animateCreate(this);
-               // existing "Start" behavior unchanged
-               .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                   saveTeams();
-                   saveRules();
-                   saveLeague();
-                   mGame.startMatch();
+            builder.setTitle(getString(R.string.new_game_title))
+           .setMessage(getString(R.string.confirm_game_setup_question))
     
-                   StoredGamesService storedGamesService = new StoredGamesManager(this);
-                   storedGamesService.createCurrentGame(mGame);
+           // NEW: allow coach signatures before starting the match
+           .setNeutralButton(R.string.sign_coaches_first, (dialog, which) -> {
+               // Persist a StoredGame so ScoreSheetActivity can load it
+               saveTeams();
+               saveRules();
+               saveLeague();
     
-                   Log.i(Tags.SETUP_UI, "Start game activity");
-                   final Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
-                   gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                           | Intent.FLAG_ACTIVITY_NEW_TASK
-                           | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                   startActivity(gameIntent);
-                   UiUtils.animateCreate(this);
-               })
-               .setNegativeButton(android.R.string.cancel, (dialog, which) -> {})
-               .show();
+               StoredGamesService s = new StoredGamesManager(this);
+               s.connectGameRecorder(mGame); // internally creates & saves the StoredGame
+    
+               // Open the score sheet so coaches can sign now
+               Intent sheet = new Intent(this, ScoreSheetActivity.class);
+               sheet.putExtra("game", mGame.getId());
+               startActivity(sheet);
+           })
+    
+           // existing OK (starts the match as usual)
+           .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+               saveTeams();
+               saveRules();
+               saveLeague();
+               mGame.startMatch();
+               StoredGamesService s = new StoredGamesManager(this);
+               s.createCurrentGame(mGame);
+               Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
+               gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               startActivity(gameIntent);
+               UiUtils.animateCreate(this);
+           })
+    
+           .setNegativeButton(android.R.string.no, (d,w) -> {});
     }
 
     private void saveTeams() {
