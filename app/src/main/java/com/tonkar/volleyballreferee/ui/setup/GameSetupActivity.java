@@ -1,5 +1,7 @@
 package com.tonkar.volleyballreferee.ui.setup;
 
+import com.tonkar.volleyballreferee.ui.scoresheet.ScoreSheetActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -114,27 +116,48 @@ public class GameSetupActivity extends AppCompatActivity {
 
     public void startGame(View view) {
         Log.i(Tags.SETUP_UI, "Start game");
-
+    
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Dialog);
-        builder.setTitle(getString(R.string.new_game_title)).setMessage(getString(R.string.confirm_game_setup_question));
-        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
-            saveTeams();
-            saveRules();
-            saveLeague();
-            mGame.startMatch();
-            StoredGamesService storedGamesService = new StoredGamesManager(this);
-            storedGamesService.createCurrentGame(mGame);
-            Log.i(Tags.SETUP_UI, "Start game activity");
-            final Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
-            gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            gameIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(gameIntent);
-            UiUtils.animateCreate(this);
-        });
-        builder.setNegativeButton(android.R.string.no, (dialog, which) -> {});
-        AlertDialog alertDialog = builder.show();
-        UiUtils.setAlertDialogMessageSize(alertDialog, getResources());
+        builder.setTitle(getString(R.string.new_game_title))
+               .setMessage(getString(R.string.confirm_game_setup_question))
+               // NEW: let user sign coaches first
+               .setNeutralButton(R.string.sign_coaches_first, (dialog, which) -> {
+                   // keep setup data
+                   saveTeams();
+                   saveRules();
+                   saveLeague();
+    
+                   // create current game but DO NOT start the match yet
+                   StoredGamesService storedGamesService = new StoredGamesManager(this);
+                   storedGamesService.createCurrentGame(mGame);
+    
+                   // jump to the score sheet and open signature dialog
+                   Intent scoreIntent = new Intent(GameSetupActivity.this, ScoreSheetActivity.class);
+                   scoreIntent.putExtra("game", mGame.getId());
+                   scoreIntent.putExtra("pre_sign_coaches", true);
+                   startActivity(scoreIntent);
+                   UiUtils.animateCreate(this);
+               })
+               // existing "Start" behavior unchanged
+               .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                   saveTeams();
+                   saveRules();
+                   saveLeague();
+                   mGame.startMatch();
+    
+                   StoredGamesService storedGamesService = new StoredGamesManager(this);
+                   storedGamesService.createCurrentGame(mGame);
+    
+                   Log.i(Tags.SETUP_UI, "Start game activity");
+                   final Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
+                   gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                           | Intent.FLAG_ACTIVITY_NEW_TASK
+                           | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                   startActivity(gameIntent);
+                   UiUtils.animateCreate(this);
+               })
+               .setNegativeButton(android.R.string.cancel, (dialog, which) -> {})
+               .show();
     }
 
     private void saveTeams() {
