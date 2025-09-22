@@ -32,7 +32,7 @@ public class ImportTeamsHelper {
             if (root.isJsonObject() && root.getAsJsonObject().has("teams")) {
                 return normalize(gson.fromJson(root.getAsJsonObject().get("teams"), TEAM_LIST));
             }
-            throw new IllegalArgumentException("Invalid JSON: expected array or {"teams": [...]}");
+            throw new IllegalArgumentException("Invalid JSON: expected array or {\"teams\": [...]}");
         }
     }
 
