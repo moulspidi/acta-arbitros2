@@ -122,22 +122,23 @@ public class GameSetupActivity extends AppCompatActivity {
                .setMessage(getString(R.string.confirm_game_setup_question))
                // NEW: let user sign coaches first
                .setNeutralButton(R.string.sign_coaches_first, (dialog, which) -> {
-                   // keep setup data
-                   saveTeams();
-                   saveRules();
-                   saveLeague();
-    
-                   // create current game but DO NOT start the match yet
-                   StoredGamesService storedGamesService = new StoredGamesManager(this);
-                   storedGamesService.createCurrentGame(mGame);
-    
-                   // jump to the score sheet and open signature dialog
-                   Intent scoreIntent = new Intent(GameSetupActivity.this, ScoreSheetActivity.class);
-                   scoreIntent.putExtra("game", mGame.getId());
-                   scoreIntent.putExtra("pre_sign_coaches", true);
-                   startActivity(scoreIntent);
-                   UiUtils.animateCreate(this);
-               })
+                    // keep setup data
+                    saveTeams();
+                    saveRules();
+                    saveLeague();
+                
+                    // Create current game but DO NOT start yet
+                    StoredGamesService storedGamesService = new StoredGamesManager(this);
+                    storedGamesService.createCurrentGame(mGame);
+                
+                    // Go to GameActivity and tell it to pop the signature dialog
+                    Intent gameIntent = new Intent(GameSetupActivity.this, GameActivity.class);
+                    gameIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            | Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    gameIntent.putExtra("pre_sign_coaches", true);
+                    startActivity(gameIntent);
+                    UiUtils.animateCreate(this);
                // existing "Start" behavior unchanged
                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                    saveTeams();
