@@ -468,4 +468,10 @@
     </string-array>
 
     <string name="import_teams">Import teams</string>
+    <string name="sign_coaches_first">Sign coaches first</string>
+    <string name="pre_sign_coaches_hint">Select “Coach (Home)” and “Coach (Guest)” to sign before the match starts.</string>
+    <string name="add_staff_member">Añadir miembro del cuerpo técnico</string>
+    <string name="add">Añadir</string>
+    <string name="signature">Firma</string>
+    <string name="starting_lineup_confirmed">Alineación confirmada</string>
 </resources>

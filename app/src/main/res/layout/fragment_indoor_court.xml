@@ -526,4 +526,11 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/lineup_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alineación no confirmada"
+        android:background="#DDFFFFFF"
+        android:padding="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

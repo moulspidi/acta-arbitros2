@@ -8,6 +8,8 @@ import com.tonkar.volleyballreferee.engine.team.GenderType;
 
 import java.util.*;
 
+import com.tonkar.volleyballreferee.engine.api.model.StaffMemberDto;
+
 import lombok.*;
 
 @Getter
@@ -36,9 +38,6 @@ public class TeamDto {
     @SerializedName("liberoColor")
     private String          liberoColor;
     @SerializedName("players")
-    private List<PlayerDto> players;
-    @SerializedName("liberos")
-    private List<PlayerDto> liberos;
     @SerializedName("captain")
     private int             captain;
     @SerializedName("coach")
@@ -54,7 +53,6 @@ public class TeamDto {
         name = "";
         color = DEFAULT_COLOR;
         liberoColor = DEFAULT_COLOR;
-        players = new ArrayList<>();
         liberos = new ArrayList<>();
         captain = -1;
         coach = "";

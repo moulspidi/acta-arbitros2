@@ -60,6 +60,10 @@ public class GameSetupActivity extends AppCompatActivity {
 
         Log.i(Tags.SETUP_UI, "Create game setup activity");
         setContentView(R.layout.activity_game_setup);
+        android.widget.Switch manual = findViewById(R.id.manual_changes_switch);
+        android.widget.Switch roster = findViewById(R.id.allow_roster_edit_switch);
+        manual.setOnCheckedChangeListener((b,checked)-> mGame.setManualChangesEnabled(checked));
+        roster.setOnCheckedChangeListener((b,checked)-> mGame.setAllowRosterEditAfterStart(checked));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");

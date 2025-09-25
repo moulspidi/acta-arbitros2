@@ -1,4 +1,7 @@
 package com.tonkar.volleyballreferee.ui.game;
+import android.content.Intent;
+import com.tonkar.volleyballreferee.ui.scoresheet.ScoreSheetActivity;
+import android.widget.Toast;
 
 import android.widget.Toast;
 
@@ -38,7 +41,12 @@ import com.tonkar.volleyballreferee.ui.util.UiUtils;
 
 import java.util.Locale;
 
-public class GameActivity extends AppCompatActivity implements ScoreListener, TimeoutListener, TeamListener, SanctionListener {
+public class GameActivity extends AppCompatActivity 
+    implements ScoreListener, TimeoutListener, TeamListener, SanctionListener {
+
+    // add the two fields right after the opening brace
+    private boolean preSignCoaches = false;
+    private boolean askedPreSignOnce = false;
 
     private IGame              mGame;
     private StoredGamesService mStoredGamesService;
@@ -80,6 +88,8 @@ public class GameActivity extends AppCompatActivity implements ScoreListener, Ti
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preSignCoaches = getIntent().getBooleanExtra("pre_sign_coaches", false);
+
         mStoredGamesService = new StoredGamesManager(this);
         mGame = mStoredGamesService.loadCurrentGame();
         preSignCoaches = getIntent().getBooleanExtra("pre_sign_coaches", false);
@@ -670,6 +680,17 @@ public class GameActivity extends AppCompatActivity implements ScoreListener, Ti
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(title);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (preSignCoaches && !askedPreSignOnce) {
+            askedPreSignOnce = true;
+            Intent sheet = new Intent(this, ScoreSheetActivity.class);
+            sheet.putExtra("pre_sign_coaches", true);
+            startActivity(sheet);
         }
     }
 }

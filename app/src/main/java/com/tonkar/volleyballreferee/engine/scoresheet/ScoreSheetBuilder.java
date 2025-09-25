@@ -46,6 +46,8 @@ public class ScoreSheetBuilder {
     private String mGuestCoachSignature;
     private String mReferee1Name;
     private String mReferee2Name;
+    private String mReferee1License;
+    private String mReferee2License;
     private String mScorerName;
     private String mHomeCaptainName;
     private String mHomeCoachName;
@@ -1085,10 +1087,16 @@ public class ScoreSheetBuilder {
         mGuestCaptainSignature = base64Image;
     }
 
-    public void setGuestCoachSignature(String name, String base64Image) {
+        public void setGuestCoachSignature(String name, String base64Image) {
         mGuestCoachName = name;
         mGuestCoachSignature = base64Image;
     }
+
+    public void setRefereeLicenses(String lic1, String lic2) {
+        mReferee1License = lic1;
+        mReferee2License = lic2;
+    }
+
 
     public void setRemarks(String text) {
         mRemarks = text;

@@ -63,6 +63,18 @@ public class GameDto {
     private String            referee1Name;
     @SerializedName("referee2")
     private String            referee2Name;
+    @SerializedName("referee1License")
+    private String            referee1License;
+    @SerializedName("referee2License")
+    private String            referee2License;
+    @SerializedName("homeCaptainSignature")
+    private String            homeCaptainSignature;
+    @SerializedName("homeCoachSignature")
+    private String            homeCoachSignature;
+    @SerializedName("guestCaptainSignature")
+    private String            guestCaptainSignature;
+    @SerializedName("guestCoachSignature")
+    private String            guestCoachSignature;
     @SerializedName("scorer")
     private String            scorerName;
 
@@ -92,8 +104,13 @@ public class GameDto {
         endTime = 0L;
         referee1Name = "";
         referee2Name = "";
-        scorerName = "";
-    }
+        referee1License = "";
+        referee2License = "";
+        homeCaptainSignature = "";
+        homeCoachSignature = "";
+        guestCaptainSignature = "";
+        guestCoachSignature = "";
+}
 
     public String buildScore() {
         StringBuilder builder = new StringBuilder();

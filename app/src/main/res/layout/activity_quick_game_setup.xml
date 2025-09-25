@@ -28,7 +28,58 @@
             android:gravity="top|center"
             android:paddingBottom="@dimen/empty_fab_space" />
 
-    </ScrollView>
+    
+            <!-- DCL-Hatim: Licencias de árbitros (UI sencilla) -->
+            <LinearLayout
+                android:id="@+id/licenses_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/big_margin_size">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/referee1_license_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Licencia Árbitro 1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/referee2_license_input"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Licencia Árbitro 2" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+    
+        
+            <!-- DCL-Hatim: Flags -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/big_margin_size">
+
+                <Switch
+                    android:id="@+id/manual_changes_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Permitir cambios manuales" />
+
+                <Switch
+                    android:id="@+id/allow_roster_edit_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Permitir editar jugadores tras iniciar" />
+            </LinearLayout>
+    
+        </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/quick_game_setup_nav"

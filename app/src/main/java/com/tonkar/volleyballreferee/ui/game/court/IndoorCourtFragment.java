@@ -23,6 +23,14 @@ import java.util.*;
 
 public class IndoorCourtFragment extends CourtFragment {
 
+    private void updateLineupBanner() {
+        android.widget.TextView banner = mView.findViewById(R.id.lineup_banner);
+        if (banner != null) {
+            banner.setText(getString(R.string.starting_lineup_confirmed));
+        }
+    }
+
+
     protected IClassicTeam   mClassicTeam;
     protected LayoutInflater mLayoutInflater;
     private   boolean        mOneStartingLineupDialog;
@@ -46,6 +54,8 @@ public class IndoorCourtFragment extends CourtFragment {
         mOneStartingLineupDialog = false;
 
         initView();
+
+        updateLineupBanner();
 
         if (mClassicTeam != null) {
             mLayoutInflater = inflater;

@@ -7,14 +7,27 @@ import com.tonkar.volleyballreferee.engine.team.*;
 import com.tonkar.volleyballreferee.engine.team.player.PositionType;
 
 import java.util.*;
+import com.tonkar.volleyballreferee.engine.api.model.RotationSnapshot;
 
 public class StoredGame extends GameDto implements IStoredGame {
 
+    private boolean manualChangesEnabled;
+    private boolean allowRosterEditAfterStart;
+    private List<RotationSnapshot> rotationHistory = new ArrayList<>();
+
+
     public StoredGame() {
         super();
-        setHomeTeam(new TeamDto());
+        
+        manualChangesEnabled = false;
+        allowRosterEditAfterStart = false;
+        rotationHistory = new ArrayList<>();
+setHomeTeam(new TeamDto());
         setGuestTeam(new TeamDto());
         setRules(new RulesDto());
+            manualChangesEnabled = false;
+        allowRosterEditAfterStart = false;
+        rotationHistory = new ArrayList<>();
     }
 
     @Override
@@ -472,5 +485,16 @@ public class StoredGame extends GameDto implements IStoredGame {
         }
 
         return result;
+    }
+
+    public boolean isManualChangesEnabled() { return manualChangesEnabled; }
+    public void setManualChangesEnabled(boolean b) { this.manualChangesEnabled = b; }
+    public boolean isAllowRosterEditAfterStart() { return allowRosterEditAfterStart; }
+    public void setAllowRosterEditAfterStart(boolean b) { this.allowRosterEditAfterStart = b; }
+    public java.util.List<RotationSnapshot> getRotationHistory() { return rotationHistory; }
+    public void setRotationHistory(java.util.List<RotationSnapshot> list) { this.rotationHistory = list; }
+    public void addRotationSnapshot(RotationSnapshot s) {
+        if (rotationHistory == null) rotationHistory = new ArrayList<>();
+        rotationHistory.add(s);
     }
 }
